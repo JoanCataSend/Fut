@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Nombre -->
+        <EditText
+            android:id="@+id/inputName"
+            android:hint="Nombre del jugador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Número -->
+        <EditText
+            android:id="@+id/inputNumber"
+            android:hint="Número"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Foto URL -->
+        <EditText
+            android:id="@+id/inputPhoto"
+            android:hint="URL de la foto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- SECCION STATS GENERALES -->
+        <TextView
+            android:text="Estadísticas Generales"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/inputGoals"
+            android:hint="Goles"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/inputAssists"
+            android:hint="Asistencias"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/inputMatches"
+            android:hint="Partidos jugados"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Físicas -->
+        <TextView
+            android:text="Estadísticas Físicas"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/inputSpeed"
+            android:hint="Velocidad (0-100)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/inputStrength"
+            android:hint="Fuerza (0-100)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/inputStamina"
+            android:hint="Resistencia (0-100)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Mentales -->
+        <TextView
+            android:text="Estadísticas Mentales"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/inputVision"
+            android:hint="Visión (0-100)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/inputCreativity"
+            android:hint="Creatividad (0-100)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/inputLeadership"
+            android:hint="Liderazgo (0-100)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Guardar -->
+        <Button
+            android:id="@+id/btnSavePlayer"
+            android:text="Guardar jugador"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Velocidad -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:text="Velocidad"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnSpeedMinus"
+                android:text="-"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:id="@+id/txtSpeedValue"
+                android:text="0"
+                android:textSize="18sp"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnSpeedPlus"
+                android:text="+"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </LinearLayout>
+
+        <!-- Fuerza -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:text="Fuerza"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnStrengthMinus"
+                android:text="-"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:id="@+id/txtStrengthValue"
+                android:text="0"
+                android:textSize="18sp"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnStrengthPlus"
+                android:text="+"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </LinearLayout>
+
+        <!-- Resistencia -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:text="Resistencia"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnStaminaMinus"
+                android:text="-"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:id="@+id/txtStaminaValue"
+                android:text="0"
+                android:textSize="18sp"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnStaminaPlus"
+                android:text="+"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </LinearLayout>
+
+        <!-- Visión -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:text="Visión"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnVisionMinus"
+                android:text="-"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:id="@+id/txtVisionValue"
+                android:text="0"
+                android:textSize="18sp"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnVisionPlus"
+                android:text="+"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </LinearLayout>
+
+        <!-- Creatividad -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:text="Creatividad"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnCreativityMinus"
+                android:text="-"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:id="@+id/txtCreativityValue"
+                android:text="0"
+                android:textSize="18sp"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnCreativityPlus"
+                android:text="+"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </LinearLayout>
+
+        <!-- Liderazgo -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:text="Liderazgo"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnLeadershipMinus"
+                android:text="-"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+
+            <TextView
+                android:id="@+id/txtLeadershipValue"
+                android:text="0"
+                android:textSize="18sp"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnLeadershipPlus"
+                android:text="+"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:text="Guardar cambios"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>
