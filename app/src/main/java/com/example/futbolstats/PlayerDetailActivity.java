@@ -7,19 +7,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.futbolstats.model.Player;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.futbolstats.model.Player;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,10 +28,17 @@ import java.util.List;
 public class PlayerDetailActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+
     private ImageView img;
-    private TextView name, txtPoints;
+    private TextView name;
+    private TextView txtPoints;
+    private TextView txtGoals;
+    private TextView txtAssists;
+    private TextView txtMatches;
+
     private RadarChart radarChart;
     private Button btnEdit;
+
     private String playerId;
 
     @Override
@@ -41,16 +47,24 @@ public class PlayerDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player_detail);
 
         playerId = getIntent().getStringExtra("id");
+        if (playerId == null) {
+            finish();
+            return;
+        }
+
         db = FirebaseFirestore.getInstance();
 
-        img = findViewById(R.id.imgPlayerDetail);
-        name = findViewById(R.id.txtPlayerName);
-        txtPoints = findViewById(R.id.txtHeight); // el cuadro "PUNTOS"
-        radarChart = findViewById(R.id.radarChart);
-        btnEdit = findViewById(R.id.btnEdit);
+        img         = findViewById(R.id.imgPlayerDetail);
+        name        = findViewById(R.id.txtPlayerName);
+        txtPoints   = findViewById(R.id.txtPoints);
+        txtGoals    = findViewById(R.id.txtGoals);
+        txtAssists  = findViewById(R.id.txtAssists);
+        txtMatches  = findViewById(R.id.txtMatches);
+        radarChart  = findViewById(R.id.radarChart);
+        btnEdit     = findViewById(R.id.btnEdit);
 
         btnEdit.setOnClickListener(v -> {
-            Intent i = new Intent(PlayerDetailActivity.this, EditStatsActivity.class);
+            Intent i = new Intent(this, EditStatsActivity.class);
             i.putExtra("id", playerId);
             startActivity(i);
         });
@@ -61,30 +75,43 @@ public class PlayerDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadPlayer(); // refrescar al volver de editar
+        loadPlayer();
     }
 
+    // ================= FIRESTORE =================
+
     private void loadPlayer() {
-        db.collection("players").document(playerId).get().addOnSuccessListener(this::bindPlayer);
+        db.collection("players")
+                .document(playerId)
+                .get()
+                .addOnSuccessListener(this::bindPlayer);
     }
 
     private void bindPlayer(DocumentSnapshot d) {
         Player p = d.toObject(Player.class);
         if (p == null) return;
 
-        // Nombre
-        name.setText(p.name);
+        name.setText(p.name != null ? p.name : "");
 
-        // Foto
-        if (p.photoUrl != null && !p.photoUrl.isEmpty())
-            Picasso.get().load(p.photoUrl).into(img);
-
-        // Puntos del panel negro
         txtPoints.setText(String.valueOf(p.globalScore));
+        txtGoals.setText(String.valueOf(p.goals));
+        txtAssists.setText(String.valueOf(p.assists));
+        txtMatches.setText(String.valueOf(p.matches));
 
-        // Radar
+        if (p.photoUrl != null && !p.photoUrl.isEmpty()) {
+            Picasso.get()
+                    .load(p.photoUrl)
+                    .fit()
+                    .centerCrop()
+                    .into(img);
+        } else {
+            img.setImageResource(R.mipmap.ic_launcher);
+        }
+
         setupRadar(p);
     }
+
+    // ================= RADAR =================
 
     private void setupRadar(Player p) {
         if (p.physical == null || p.mental == null) return;
@@ -108,10 +135,13 @@ public class PlayerDetailActivity extends AppCompatActivity {
         RadarData data = new RadarData(set);
         radarChart.setData(data);
 
-        // Etiquetas del radar
         List<String> labels = Arrays.asList(
-                "Velocidad", "Fuerza", "Resistencia",
-                "Visión", "Creatividad", "Liderazgo"
+                "Velocidad",
+                "Fuerza",
+                "Resistencia",
+                "Visión",
+                "Creatividad",
+                "Liderazgo"
         );
 
         XAxis xAxis = radarChart.getXAxis();
@@ -120,27 +150,23 @@ public class PlayerDetailActivity extends AppCompatActivity {
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int index = (int) value % labels.size();
-                return labels.get(index);
+                return labels.get(((int) value) % labels.size());
             }
         });
 
         YAxis yAxis = radarChart.getYAxis();
-        yAxis.setTextColor(Color.WHITE);
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(100f);
-        yAxis.setEnabled(false); // oculta números interiores
+        yAxis.setEnabled(false);
 
-        // Estilo de la red
         radarChart.setBackgroundColor(Color.TRANSPARENT);
         radarChart.setWebColor(Color.WHITE);
-        radarChart.setWebLineWidth(1.5f);
         radarChart.setWebColorInner(Color.WHITE);
+        radarChart.setWebLineWidth(1.5f);
         radarChart.setWebLineWidthInner(1.2f);
 
-        radarChart.getDescription().setEnabled(false);
         radarChart.getLegend().setEnabled(false);
-
+        radarChart.getDescription().setEnabled(false);
         radarChart.invalidate();
     }
 }

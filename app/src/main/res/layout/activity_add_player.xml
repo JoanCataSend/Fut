@@ -2,132 +2,251 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#101010"
     android:padding="20dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <!-- Nombre -->
-        <EditText
-            android:id="@+id/inputName"
-            android:hint="Nombre del jugador"
+        <!-- ======================
+             DATOS BÁSICOS
+        ======================= -->
+
+        <TextView
+            android:text="Datos del jugador"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_inner_card"
+            android:layout_marginBottom="20dp">
 
-        <!-- Número -->
-        <EditText
-            android:id="@+id/inputNumber"
-            android:hint="Número"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputName"
+                android:hint="Nombre del jugador"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <!-- Foto URL -->
-        <EditText
-            android:id="@+id/inputPhoto"
-            android:hint="URL de la foto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputNumber"
+                android:hint="Número"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <!-- SECCION STATS GENERALES -->
+            <EditText
+                android:id="@+id/inputPhoto"
+                android:hint="URL de la foto"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <!-- ======================
+             ESTADÍSTICAS GENERALES
+        ======================= -->
+
         <TextView
             android:text="Estadísticas Generales"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/inputGoals"
-            android:hint="Goles"
-            android:inputType="number"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_inner_card"
+            android:layout_marginBottom="20dp">
 
-        <EditText
-            android:id="@+id/inputAssists"
-            android:hint="Asistencias"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputGoals"
+                android:hint="Goles"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/inputMatches"
-            android:hint="Partidos jugados"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputAssists"
+                android:hint="Asistencias"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <!-- Físicas -->
+            <EditText
+                android:id="@+id/inputMatches"
+                android:hint="Partidos jugados"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <!-- ======================
+             ESTADÍSTICAS FÍSICAS
+        ======================= -->
+
         <TextView
             android:text="Estadísticas Físicas"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/inputSpeed"
-            android:hint="Velocidad (0-100)"
-            android:inputType="number"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_inner_card"
+            android:layout_marginBottom="20dp">
 
-        <EditText
-            android:id="@+id/inputStrength"
-            android:hint="Fuerza (0-100)"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputSpeed"
+                android:hint="Velocidad (0-100)"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/inputStamina"
-            android:hint="Resistencia (0-100)"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputStrength"
+                android:hint="Fuerza (0-100)"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <!-- Mentales -->
+            <EditText
+                android:id="@+id/inputStamina"
+                android:hint="Resistencia (0-100)"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <!-- ======================
+             ESTADÍSTICAS MENTALES
+        ======================= -->
+
         <TextView
             android:text="Estadísticas Mentales"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/inputVision"
-            android:hint="Visión (0-100)"
-            android:inputType="number"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_inner_card"
+            android:layout_marginBottom="30dp">
 
-        <EditText
-            android:id="@+id/inputCreativity"
-            android:hint="Creatividad (0-100)"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputVision"
+                android:hint="Visión (0-100)"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/inputLeadership"
-            android:hint="Liderazgo (0-100)"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/inputCreativity"
+                android:hint="Creatividad (0-100)"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <!-- Guardar -->
+            <EditText
+                android:id="@+id/inputLeadership"
+                android:hint="Liderazgo (0-100)"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#808080"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <!-- BOTÓN GUARDAR -->
         <Button
             android:id="@+id/btnSavePlayer"
             android:text="Guardar jugador"
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="55dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:background="@drawable/btn_edit_gradient"
+            android:elevation="6dp" />
 
     </LinearLayout>
 </ScrollView>

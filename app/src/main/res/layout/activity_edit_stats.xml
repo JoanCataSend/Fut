@@ -1,235 +1,396 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:fillViewport="true"
+    android:background="#101010"
+    android:paddingBottom="40dp">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/panelEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/bg_bottom_sheet">
 
-        <!-- Velocidad -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+        <!-- TÍTULO -->
+        <TextView
+            android:id="@+id/txtEditTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Editar Estadísticas"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- ================= DATOS GENERALES ================= -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Datos del jugador"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/inputName"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Nombre"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAAAAA"
+            android:background="@drawable/bg_inner_card"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/inputGoals"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Goles"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAAAAA"
+            android:background="@drawable/bg_inner_card"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/inputAssists"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Asistencias"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAAAAA"
+            android:background="@drawable/bg_inner_card"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/inputMatches"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Partidos jugados"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAAAAA"
+            android:background="@drawable/bg_inner_card"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- ================= ATRIBUTOS ================= -->
+
+        <!-- VELOCIDAD -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:background="@drawable/bg_inner_card"
+            android:padding="16dp"
+            android:layout_marginBottom="14dp">
 
             <TextView
-                android:text="Velocidad"
-                android:textSize="18sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Velocidad"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnSpeedMinus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="-"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
 
             <TextView
                 android:id="@+id/txtSpeedValue"
-                android:text="0"
-                android:textSize="18sp"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content"/>
+                android:text="0"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnSpeedPlus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="+"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
         </LinearLayout>
 
-        <!-- Fuerza -->
+        <!-- FUERZA -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:background="@drawable/bg_inner_card"
+            android:padding="16dp"
+            android:layout_marginBottom="14dp">
 
             <TextView
-                android:text="Fuerza"
-                android:textSize="18sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Fuerza"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnStrengthMinus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="-"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
 
             <TextView
                 android:id="@+id/txtStrengthValue"
-                android:text="0"
-                android:textSize="18sp"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content"/>
+                android:text="0"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnStrengthPlus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="+"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
         </LinearLayout>
 
-        <!-- Resistencia -->
+        <!-- RESISTENCIA -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:background="@drawable/bg_inner_card"
+            android:padding="16dp"
+            android:layout_marginBottom="14dp">
 
             <TextView
-                android:text="Resistencia"
-                android:textSize="18sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Resistencia"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnStaminaMinus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="-"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
 
             <TextView
                 android:id="@+id/txtStaminaValue"
-                android:text="0"
-                android:textSize="18sp"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content"/>
+                android:text="0"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnStaminaPlus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="+"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
         </LinearLayout>
 
-        <!-- Visión -->
+        <!-- VISIÓN -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:background="@drawable/bg_inner_card"
+            android:padding="16dp"
+            android:layout_marginBottom="14dp">
 
             <TextView
-                android:text="Visión"
-                android:textSize="18sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Visión"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnVisionMinus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="-"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
 
             <TextView
                 android:id="@+id/txtVisionValue"
-                android:text="0"
-                android:textSize="18sp"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content"/>
+                android:text="0"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnVisionPlus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="+"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
         </LinearLayout>
 
-        <!-- Creatividad -->
+        <!-- CREATIVIDAD -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:background="@drawable/bg_inner_card"
+            android:padding="16dp"
+            android:layout_marginBottom="14dp">
 
             <TextView
-                android:text="Creatividad"
-                android:textSize="18sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Creatividad"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnCreativityMinus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="-"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
 
             <TextView
                 android:id="@+id/txtCreativityValue"
-                android:text="0"
-                android:textSize="18sp"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content"/>
+                android:text="0"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnCreativityPlus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="+"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
         </LinearLayout>
 
-        <!-- Liderazgo -->
+        <!-- LIDERAZGO -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="10dp">
+            android:background="@drawable/bg_inner_card"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp">
 
             <TextView
-                android:text="Liderazgo"
-                android:textSize="18sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Liderazgo"
+                android:textSize="20sp"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnLeadershipMinus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="-"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
 
             <TextView
                 android:id="@+id/txtLeadershipValue"
-                android:text="0"
-                android:textSize="18sp"
-                android:layout_width="50dp"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content"/>
+                android:text="0"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/btnLeadershipPlus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:text="+"
-                android:layout_width="45dp"
-                android:layout_height="45dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_circle"/>
         </LinearLayout>
 
+        <!-- GUARDAR -->
         <Button
             android:id="@+id/btnSave"
-            android:text="Guardar cambios"
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="60dp"
+            android:text="Guardar cambios"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/btn_edit_gradient"
+            android:elevation="6dp"/>
+
     </LinearLayout>
-</ScrollView>
+
+</androidx.core.widget.NestedScrollView>

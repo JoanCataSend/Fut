@@ -2,36 +2,65 @@ package com.example.futbolstats.model;
 
 public class Player {
 
+    // ======================
+    // DATOS BÁSICOS
+    // ======================
     public String id;
     public String name;
     public int number;
     public String photoUrl;
+
+    // ======================
+    // ESTADÍSTICAS GENERALES (NUEVO MODELO)
+    // ======================
+    public int goals;
+    public int assists;
+    public int matches;
     public int globalScore;
+
+    // ======================
+    // COMPATIBILIDAD FIRESTORE (MODELO ANTIGUO)
+    // ======================
+    // ⚠️ SOLO para evitar warnings si existen documentos antiguos
     public Stats stats;
+
+    // ======================
+    // ATRIBUTOS
+    // ======================
     public Physical physical;
     public Mental mental;
 
-    // Constructor vacío requerido por Firebase
+    // 🔴 Constructor vacío OBLIGATORIO para Firestore
     public Player() {}
 
-    // --- FORCE FIX: convierte strings o números sin crash ---
-    public void setNumber(Object value) {
-        this.number = parseInt(value);
+    // ======================
+    // CLASES INTERNAS
+    // ======================
+
+    // ---- Stats antiguas (Firestore legacy) ----
+    public static class Stats {
+        public int goals;
+        public int assists;
+        public int matches;
+
+        public Stats() {}
     }
 
-    public void setGlobalScore(Object value) {
-        this.globalScore = parseInt(value);
+    // ---- Atributos físicos ----
+    public static class Physical {
+        public int speed;
+        public int strength;
+        public int stamina;
+
+        public Physical() {}
     }
 
-    // Método seguro para convertir cualquier cosa a int
-    private int parseInt(Object v) {
-        try {
-            if (v instanceof Long) return ((Long) v).intValue();
-            if (v instanceof Integer) return (int) v;
-            if (v instanceof String) return Integer.parseInt((String) v);
-        } catch (Exception e) {
-            return 0;
-        }
-        return 0;
+    // ---- Atributos mentales ----
+    public static class Mental {
+        public int vision;
+        public int creativity;
+        public int leadership;
+
+        public Mental() {}
     }
 }

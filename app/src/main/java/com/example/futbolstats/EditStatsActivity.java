@@ -1,7 +1,8 @@
 package com.example.futbolstats;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +19,14 @@ public class EditStatsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String playerId;
 
+    // ===== DATOS GENERALES =====
+    private EditText inputName, inputGoals, inputAssists, inputMatches;
+
+    // ===== STATS =====
     private int speed, strength, stamina, vision, creativity, leadership;
 
-    private TextView txtSpeed, txtStrength, txtStamina, txtVision, txtCreativity, txtLeadership;
+    private TextView txtSpeed, txtStrength, txtStamina;
+    private TextView txtVision, txtCreativity, txtLeadership;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,13 @@ public class EditStatsActivity extends AppCompatActivity {
         playerId = getIntent().getStringExtra("id");
         db = FirebaseFirestore.getInstance();
 
+        // ===== INPUTS GENERALES =====
+        inputName = findViewById(R.id.inputName);
+        inputGoals = findViewById(R.id.inputGoals);
+        inputAssists = findViewById(R.id.inputAssists);
+        inputMatches = findViewById(R.id.inputMatches);
+
+        // ===== TEXTOS DE STATS =====
         txtSpeed = findViewById(R.id.txtSpeedValue);
         txtStrength = findViewById(R.id.txtStrengthValue);
         txtStamina = findViewById(R.id.txtStaminaValue);
@@ -37,113 +50,136 @@ public class EditStatsActivity extends AppCompatActivity {
         txtCreativity = findViewById(R.id.txtCreativityValue);
         txtLeadership = findViewById(R.id.txtLeadershipValue);
 
-        Button btnSpeedMinus = findViewById(R.id.btnSpeedMinus);
-        Button btnSpeedPlus = findViewById(R.id.btnSpeedPlus);
-        Button btnStrengthMinus = findViewById(R.id.btnStrengthMinus);
-        Button btnStrengthPlus = findViewById(R.id.btnStrengthPlus);
-        Button btnStaminaMinus = findViewById(R.id.btnStaminaMinus);
-        Button btnStaminaPlus = findViewById(R.id.btnStaminaPlus);
-        Button btnVisionMinus = findViewById(R.id.btnVisionMinus);
-        Button btnVisionPlus = findViewById(R.id.btnVisionPlus);
-        Button btnCreativityMinus = findViewById(R.id.btnCreativityMinus);
-        Button btnCreativityPlus = findViewById(R.id.btnCreativityPlus);
-        Button btnLeadershipMinus = findViewById(R.id.btnLeadershipMinus);
-        Button btnLeadershipPlus = findViewById(R.id.btnLeadershipPlus);
-        Button btnSave = findViewById(R.id.btnSave);
+        // ===== BOTONES =====
+        findViewById(R.id.btnSpeedPlus).setOnClickListener(v -> changeStat(1, "speed"));
+        findViewById(R.id.btnSpeedMinus).setOnClickListener(v -> changeStat(-1, "speed"));
+
+        findViewById(R.id.btnStrengthPlus).setOnClickListener(v -> changeStat(1, "strength"));
+        findViewById(R.id.btnStrengthMinus).setOnClickListener(v -> changeStat(-1, "strength"));
+
+        findViewById(R.id.btnStaminaPlus).setOnClickListener(v -> changeStat(1, "stamina"));
+        findViewById(R.id.btnStaminaMinus).setOnClickListener(v -> changeStat(-1, "stamina"));
+
+        findViewById(R.id.btnVisionPlus).setOnClickListener(v -> changeStat(1, "vision"));
+        findViewById(R.id.btnVisionMinus).setOnClickListener(v -> changeStat(-1, "vision"));
+
+        findViewById(R.id.btnCreativityPlus).setOnClickListener(v -> changeStat(1, "creativity"));
+        findViewById(R.id.btnCreativityMinus).setOnClickListener(v -> changeStat(-1, "creativity"));
+
+        findViewById(R.id.btnLeadershipPlus).setOnClickListener(v -> changeStat(1, "leadership"));
+        findViewById(R.id.btnLeadershipMinus).setOnClickListener(v -> changeStat(-1, "leadership"));
+
+        findViewById(R.id.btnSave).setOnClickListener(v -> saveStats());
 
         loadPlayer();
-
-        btnSpeedPlus.setOnClickListener(v -> changeStat(1, "speed"));
-        btnSpeedMinus.setOnClickListener(v -> changeStat(-1, "speed"));
-        btnStrengthPlus.setOnClickListener(v -> changeStat(1, "strength"));
-        btnStrengthMinus.setOnClickListener(v -> changeStat(-1, "strength"));
-        btnStaminaPlus.setOnClickListener(v -> changeStat(1, "stamina"));
-        btnStaminaMinus.setOnClickListener(v -> changeStat(-1, "stamina"));
-        btnVisionPlus.setOnClickListener(v -> changeStat(1, "vision"));
-        btnVisionMinus.setOnClickListener(v -> changeStat(-1, "vision"));
-        btnCreativityPlus.setOnClickListener(v -> changeStat(1, "creativity"));
-        btnCreativityMinus.setOnClickListener(v -> changeStat(-1, "creativity"));
-        btnLeadershipPlus.setOnClickListener(v -> changeStat(1, "leadership"));
-        btnLeadershipMinus.setOnClickListener(v -> changeStat(-1, "leadership"));
-
-        btnSave.setOnClickListener(v -> saveStats());
     }
+
+    // ================== LOAD ==================
+
+    private void loadPlayer() {
+        db.collection("players").document(playerId)
+                .get()
+                .addOnSuccessListener(d -> {
+                    Player p = d.toObject(Player.class);
+                    if (p == null) return;
+
+                    // Generales
+                    inputName.setText(p.name);
+                    inputGoals.setText(String.valueOf(p.goals));
+                    inputAssists.setText(String.valueOf(p.assists));
+                    inputMatches.setText(String.valueOf(p.matches));
+
+                    if (p.physical != null) {
+                        speed = p.physical.speed;
+                        strength = p.physical.strength;
+                        stamina = p.physical.stamina;
+                    }
+
+                    if (p.mental != null) {
+                        vision = p.mental.vision;
+                        creativity = p.mental.creativity;
+                        leadership = p.mental.leadership;
+                    }
+
+                    updateUI();
+                });
+    }
+
+    private void updateUI() {
+        txtSpeed.setText(String.valueOf(speed));
+        txtStrength.setText(String.valueOf(strength));
+        txtStamina.setText(String.valueOf(stamina));
+        txtVision.setText(String.valueOf(vision));
+        txtCreativity.setText(String.valueOf(creativity));
+        txtLeadership.setText(String.valueOf(leadership));
+    }
+
+    // ================== LOGIC ==================
 
     private void changeStat(int delta, String stat) {
         switch (stat) {
-            case "speed":
-                speed = clamp(speed + delta);
-                txtSpeed.setText(String.valueOf(speed));
-                break;
-            case "strength":
-                strength = clamp(strength + delta);
-                txtStrength.setText(String.valueOf(strength));
-                break;
-            case "stamina":
-                stamina = clamp(stamina + delta);
-                txtStamina.setText(String.valueOf(stamina));
-                break;
-            case "vision":
-                vision = clamp(vision + delta);
-                txtVision.setText(String.valueOf(vision));
-                break;
-            case "creativity":
-                creativity = clamp(creativity + delta);
-                txtCreativity.setText(String.valueOf(creativity));
-                break;
-            case "leadership":
-                leadership = clamp(leadership + delta);
-                txtLeadership.setText(String.valueOf(leadership));
-                break;
+            case "speed": speed = clamp(speed + delta); break;
+            case "strength": strength = clamp(strength + delta); break;
+            case "stamina": stamina = clamp(stamina + delta); break;
+            case "vision": vision = clamp(vision + delta); break;
+            case "creativity": creativity = clamp(creativity + delta); break;
+            case "leadership": leadership = clamp(leadership + delta); break;
         }
+        updateUI();
     }
 
-    private int clamp(int value) {
-        if (value < 0) return 0;
-        if (value > 100) return 100;
-        return value;
+    private int clamp(int v) {
+        return Math.max(0, Math.min(100, v));
     }
 
-    private void loadPlayer() {
-        db.collection("players").document(playerId).get().addOnSuccessListener(d -> {
-            Player p = d.toObject(Player.class);
-            if (p == null || p.physical == null || p.mental == null) return;
-
-            speed = p.physical.speed;
-            strength = p.physical.strength;
-            stamina = p.physical.stamina;
-            vision = p.mental.vision;
-            creativity = p.mental.creativity;
-            leadership = p.mental.leadership;
-
-            txtSpeed.setText(String.valueOf(speed));
-            txtStrength.setText(String.valueOf(strength));
-            txtStamina.setText(String.valueOf(stamina));
-            txtVision.setText(String.valueOf(vision));
-            txtCreativity.setText(String.valueOf(creativity));
-            txtLeadership.setText(String.valueOf(leadership));
-        });
-    }
+    // ================== SAVE ==================
 
     private void saveStats() {
-        int globalScore = (speed + strength + stamina + vision + creativity + leadership) / 6;
+
+        String name = inputName.getText().toString().trim();
+        int goals = parseInt(inputGoals);
+        int assists = parseInt(inputAssists);
+        int matches = parseInt(inputMatches);
+
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(this, "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int globalScore =
+                (speed + strength + stamina + vision + creativity + leadership) / 6;
 
         Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
+        updates.put("goals", goals);
+        updates.put("assists", assists);
+        updates.put("matches", matches);
+
         updates.put("physical.speed", speed);
         updates.put("physical.strength", strength);
         updates.put("physical.stamina", stamina);
+
         updates.put("mental.vision", vision);
         updates.put("mental.creativity", creativity);
         updates.put("mental.leadership", leadership);
+
         updates.put("globalScore", globalScore);
 
         db.collection("players").document(playerId)
                 .update(updates)
                 .addOnSuccessListener(v -> {
-                    Toast.makeText(this, "Estadísticas guardadas", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show());
+    }
+
+    private int parseInt(EditText et) {
+        try {
+            return Integer.parseInt(et.getText().toString());
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
