@@ -1,7 +1,9 @@
 package com.example.futbolstats;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -26,21 +28,29 @@ public class MainActivity extends AppCompatActivity {
     private final List<Player> players = new ArrayList<>();
     private FirebaseFirestore db;
 
+    private Button btnAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Configurar RecyclerView
+        // RecyclerView
         recycler = findViewById(R.id.recyclerPlayers);
         recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        // Botón para añadir un jugador
-        Button btnAdd = findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(v -> {
-            Intent i = new Intent(MainActivity.this, AddPlayerActivity.class);
-            startActivity(i);
-        });
+        // Botón añadir jugador
+        btnAdd = findViewById(R.id.btnAdd);
+
+        // 🔐 CONTROL DE ROL
+        if (!isAdmin()) {
+            btnAdd.setVisibility(View.GONE); // jugador NO lo ve
+        } else {
+            btnAdd.setOnClickListener(v -> {
+                Intent i = new Intent(MainActivity.this, AddPlayerActivity.class);
+                startActivity(i);
+            });
+        }
 
         // Firestore
         db = FirebaseFirestore.getInstance();
@@ -49,25 +59,29 @@ public class MainActivity extends AppCompatActivity {
         loadPlayers();
     }
 
+    // ================== SESIÓN ==================
+
+    private boolean isAdmin() {
+        SharedPreferences prefs = getSharedPreferences("session", MODE_PRIVATE);
+        return prefs.getBoolean("isAdmin", false);
+    }
+
+    // ================== FIRESTORE ==================
+
     private void loadPlayers() {
         db.collection("players").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+            public void onEvent(@Nullable QuerySnapshot snapshot,
+                                @Nullable FirebaseFirestoreException error) {
 
-                if (error != null) {
-                    // Manejo básico de error
-                    error.printStackTrace();
-                    return;
-                }
-
-                if (snapshot == null) return;
+                if (error != null || snapshot == null) return;
 
                 players.clear();
 
                 for (DocumentSnapshot d : snapshot.getDocuments()) {
                     Player p = d.toObject(Player.class);
                     if (p != null) {
-                        p.id = d.getId();  // asignar ID
+                        p.id = d.getId();
                         players.add(p);
                     }
                 }

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.futbolstats">
 
-    <!-- Necesario para Firebase + carga de imágenes (Picasso) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,14 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!-- 🔥 Firebase Analytics (si lo usas) -->
         <meta-data
             android:name="com.google.firebase.analytics.default_analytics_collection_enabled"
             android:value="true" />
 
-        <!-- 🏠 Activity principal (lista de jugadores) -->
+        <!-- 🔐 LOGIN -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,19 +26,22 @@
             </intent-filter>
         </activity>
 
-        <!-- 📊 Detalle del jugador con radar -->
+        <!-- 🏠 APP -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
         <activity
             android:name=".PlayerDetailActivity"
             android:exported="false" />
 
-        <!-- ➕➖ Edición de estadísticas -->
         <activity
             android:name=".EditStatsActivity"
             android:exported="false" />
+
         <activity
             android:name=".AddPlayerActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
     </application>
-
 </manifest>

@@ -1,6 +1,7 @@
 package com.example.futbolstats;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
@@ -30,12 +31,7 @@ public class PlayerDetailActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private ImageView img;
-    private TextView name;
-    private TextView txtPoints;
-    private TextView txtGoals;
-    private TextView txtAssists;
-    private TextView txtMatches;
-
+    private TextView name, txtPoints, txtGoals, txtAssists, txtMatches;
     private RadarChart radarChart;
     private Button btnEdit;
 
@@ -54,20 +50,28 @@ public class PlayerDetailActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        img         = findViewById(R.id.imgPlayerDetail);
-        name        = findViewById(R.id.txtPlayerName);
-        txtPoints   = findViewById(R.id.txtPoints);
-        txtGoals    = findViewById(R.id.txtGoals);
-        txtAssists  = findViewById(R.id.txtAssists);
-        txtMatches  = findViewById(R.id.txtMatches);
-        radarChart  = findViewById(R.id.radarChart);
-        btnEdit     = findViewById(R.id.btnEdit);
+        img        = findViewById(R.id.imgPlayerDetail);
+        name       = findViewById(R.id.txtPlayerName);
+        txtPoints  = findViewById(R.id.txtPoints);
+        txtGoals   = findViewById(R.id.txtGoals);
+        txtAssists = findViewById(R.id.txtAssists);
+        txtMatches = findViewById(R.id.txtMatches);
+        radarChart = findViewById(R.id.radarChart);
+        btnEdit    = findViewById(R.id.btnEdit);
 
-        btnEdit.setOnClickListener(v -> {
-            Intent i = new Intent(this, EditStatsActivity.class);
-            i.putExtra("id", playerId);
-            startActivity(i);
-        });
+        // 🔐 CONTROL DE ROL
+        SharedPreferences prefs = getSharedPreferences("session", MODE_PRIVATE);
+        boolean isAdmin = prefs.getBoolean("isAdmin", false);
+
+        if (!isAdmin) {
+            btnEdit.setVisibility(Button.GONE);
+        } else {
+            btnEdit.setOnClickListener(v -> {
+                Intent i = new Intent(this, EditStatsActivity.class);
+                i.putExtra("id", playerId);
+                startActivity(i);
+            });
+        }
 
         loadPlayer();
     }
@@ -99,11 +103,7 @@ public class PlayerDetailActivity extends AppCompatActivity {
         txtMatches.setText(String.valueOf(p.matches));
 
         if (p.photoUrl != null && !p.photoUrl.isEmpty()) {
-            Picasso.get()
-                    .load(p.photoUrl)
-                    .fit()
-                    .centerCrop()
-                    .into(img);
+            Picasso.get().load(p.photoUrl).fit().centerCrop().into(img);
         } else {
             img.setImageResource(R.mipmap.ic_launcher);
         }
@@ -132,16 +132,11 @@ public class PlayerDetailActivity extends AppCompatActivity {
         set.setLineWidth(3f);
         set.setDrawValues(false);
 
-        RadarData data = new RadarData(set);
-        radarChart.setData(data);
+        radarChart.setData(new RadarData(set));
 
         List<String> labels = Arrays.asList(
-                "Velocidad",
-                "Fuerza",
-                "Resistencia",
-                "Visión",
-                "Creatividad",
-                "Liderazgo"
+                "Velocidad", "Fuerza", "Resistencia",
+                "Visión", "Creatividad", "Liderazgo"
         );
 
         XAxis xAxis = radarChart.getXAxis();
@@ -158,12 +153,6 @@ public class PlayerDetailActivity extends AppCompatActivity {
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(100f);
         yAxis.setEnabled(false);
-
-        radarChart.setBackgroundColor(Color.TRANSPARENT);
-        radarChart.setWebColor(Color.WHITE);
-        radarChart.setWebColorInner(Color.WHITE);
-        radarChart.setWebLineWidth(1.5f);
-        radarChart.setWebLineWidthInner(1.2f);
 
         radarChart.getLegend().setEnabled(false);
         radarChart.getDescription().setEnabled(false);
