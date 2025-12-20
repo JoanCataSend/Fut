@@ -16,7 +16,7 @@
             android:name="com.google.firebase.analytics.default_analytics_collection_enabled"
             android:value="true" />
 
-        <!-- 🔐 LOGIN -->
+        <!-- 🔐 LOGIN (LAUNCHER) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <!-- 🏠 APP -->
+        <!-- 🏠 APP PRINCIPAL -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

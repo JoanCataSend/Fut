@@ -17,6 +17,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 🔐 SI YA HAY SESIÓN → SALTAR LOGIN
+        if (hasSession()) {
+            openApp();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         inputUser = findViewById(R.id.inputUser);
@@ -42,6 +49,13 @@ public class LoginActivity extends AppCompatActivity {
             saveRole(false);
             openApp();
         });
+    }
+
+    // ================= SESIÓN =================
+
+    private boolean hasSession() {
+        SharedPreferences prefs = getSharedPreferences("session", MODE_PRIVATE);
+        return prefs.contains("isAdmin");
     }
 
     private void saveRole(boolean isAdmin) {
