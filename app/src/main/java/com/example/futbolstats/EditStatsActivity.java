@@ -1,9 +1,10 @@
 package com.example.futbolstats;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +26,8 @@ public class EditStatsActivity extends AppCompatActivity {
     // ===== STATS =====
     private int speed, strength, stamina, vision, creativity, leadership;
 
-    private TextView txtSpeed, txtStrength, txtStamina;
-    private TextView txtVision, txtCreativity, txtLeadership;
+    private EditText txtSpeed, txtStrength, txtStamina;
+    private EditText txtVision, txtCreativity, txtLeadership;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class EditStatsActivity extends AppCompatActivity {
         inputAssists = findViewById(R.id.inputAssists);
         inputMatches = findViewById(R.id.inputMatches);
 
-        // ===== TEXTOS DE STATS =====
+        // ===== STATS (EDITABLES) =====
         txtSpeed = findViewById(R.id.txtSpeedValue);
         txtStrength = findViewById(R.id.txtStrengthValue);
         txtStamina = findViewById(R.id.txtStaminaValue);
@@ -50,24 +51,32 @@ public class EditStatsActivity extends AppCompatActivity {
         txtCreativity = findViewById(R.id.txtCreativityValue);
         txtLeadership = findViewById(R.id.txtLeadershipValue);
 
-        // ===== BOTONES =====
-        findViewById(R.id.btnSpeedPlus).setOnClickListener(v -> changeStat(1, "speed"));
-        findViewById(R.id.btnSpeedMinus).setOnClickListener(v -> changeStat(-1, "speed"));
+        // ===== BOTONES + / - =====
+        findViewById(R.id.btnSpeedPlus).setOnClickListener(v -> updateStat(txtSpeed, +1));
+        findViewById(R.id.btnSpeedMinus).setOnClickListener(v -> updateStat(txtSpeed, -1));
 
-        findViewById(R.id.btnStrengthPlus).setOnClickListener(v -> changeStat(1, "strength"));
-        findViewById(R.id.btnStrengthMinus).setOnClickListener(v -> changeStat(-1, "strength"));
+        findViewById(R.id.btnStrengthPlus).setOnClickListener(v -> updateStat(txtStrength, +1));
+        findViewById(R.id.btnStrengthMinus).setOnClickListener(v -> updateStat(txtStrength, -1));
 
-        findViewById(R.id.btnStaminaPlus).setOnClickListener(v -> changeStat(1, "stamina"));
-        findViewById(R.id.btnStaminaMinus).setOnClickListener(v -> changeStat(-1, "stamina"));
+        findViewById(R.id.btnStaminaPlus).setOnClickListener(v -> updateStat(txtStamina, +1));
+        findViewById(R.id.btnStaminaMinus).setOnClickListener(v -> updateStat(txtStamina, -1));
 
-        findViewById(R.id.btnVisionPlus).setOnClickListener(v -> changeStat(1, "vision"));
-        findViewById(R.id.btnVisionMinus).setOnClickListener(v -> changeStat(-1, "vision"));
+        findViewById(R.id.btnVisionPlus).setOnClickListener(v -> updateStat(txtVision, +1));
+        findViewById(R.id.btnVisionMinus).setOnClickListener(v -> updateStat(txtVision, -1));
 
-        findViewById(R.id.btnCreativityPlus).setOnClickListener(v -> changeStat(1, "creativity"));
-        findViewById(R.id.btnCreativityMinus).setOnClickListener(v -> changeStat(-1, "creativity"));
+        findViewById(R.id.btnCreativityPlus).setOnClickListener(v -> updateStat(txtCreativity, +1));
+        findViewById(R.id.btnCreativityMinus).setOnClickListener(v -> updateStat(txtCreativity, -1));
 
-        findViewById(R.id.btnLeadershipPlus).setOnClickListener(v -> changeStat(1, "leadership"));
-        findViewById(R.id.btnLeadershipMinus).setOnClickListener(v -> changeStat(-1, "leadership"));
+        findViewById(R.id.btnLeadershipPlus).setOnClickListener(v -> updateStat(txtLeadership, +1));
+        findViewById(R.id.btnLeadershipMinus).setOnClickListener(v -> updateStat(txtLeadership, -1));
+
+        // ===== LISTENERS DE ESCRITURA =====
+        addWatcher(txtSpeed, v -> speed = v);
+        addWatcher(txtStrength, v -> strength = v);
+        addWatcher(txtStamina, v -> stamina = v);
+        addWatcher(txtVision, v -> vision = v);
+        addWatcher(txtCreativity, v -> creativity = v);
+        addWatcher(txtLeadership, v -> leadership = v);
 
         findViewById(R.id.btnSave).setOnClickListener(v -> saveStats());
 
@@ -83,7 +92,6 @@ public class EditStatsActivity extends AppCompatActivity {
                     Player p = d.toObject(Player.class);
                     if (p == null) return;
 
-                    // Generales
                     inputName.setText(p.name);
                     inputGoals.setText(String.valueOf(p.goals));
                     inputAssists.setText(String.valueOf(p.assists));
@@ -101,31 +109,38 @@ public class EditStatsActivity extends AppCompatActivity {
                         leadership = p.mental.leadership;
                     }
 
-                    updateUI();
+                    txtSpeed.setText(String.valueOf(speed));
+                    txtStrength.setText(String.valueOf(strength));
+                    txtStamina.setText(String.valueOf(stamina));
+                    txtVision.setText(String.valueOf(vision));
+                    txtCreativity.setText(String.valueOf(creativity));
+                    txtLeadership.setText(String.valueOf(leadership));
                 });
     }
 
-    private void updateUI() {
-        txtSpeed.setText(String.valueOf(speed));
-        txtStrength.setText(String.valueOf(strength));
-        txtStamina.setText(String.valueOf(stamina));
-        txtVision.setText(String.valueOf(vision));
-        txtCreativity.setText(String.valueOf(creativity));
-        txtLeadership.setText(String.valueOf(leadership));
+    // ================== HELPERS ==================
+
+    private void updateStat(EditText et, int delta) {
+        int v = parse(et.getText().toString());
+        v = clamp(v + delta);
+        et.setText(String.valueOf(v));
     }
 
-    // ================== LOGIC ==================
+    private void addWatcher(EditText et, StatCallback cb) {
+        et.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                int v = clamp(parse(s.toString()));
+                cb.onChange(v);
+            }
+        });
+    }
 
-    private void changeStat(int delta, String stat) {
-        switch (stat) {
-            case "speed": speed = clamp(speed + delta); break;
-            case "strength": strength = clamp(strength + delta); break;
-            case "stamina": stamina = clamp(stamina + delta); break;
-            case "vision": vision = clamp(vision + delta); break;
-            case "creativity": creativity = clamp(creativity + delta); break;
-            case "leadership": leadership = clamp(leadership + delta); break;
-        }
-        updateUI();
+    private int parse(String s) {
+        try { return Integer.parseInt(s); }
+        catch (Exception e) { return 0; }
     }
 
     private int clamp(int v) {
@@ -137,14 +152,14 @@ public class EditStatsActivity extends AppCompatActivity {
     private void saveStats() {
 
         String name = inputName.getText().toString().trim();
-        int goals = parseInt(inputGoals);
-        int assists = parseInt(inputAssists);
-        int matches = parseInt(inputMatches);
-
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        int goals = parse(inputGoals.getText().toString());
+        int assists = parse(inputAssists.getText().toString());
+        int matches = parse(inputMatches.getText().toString());
 
         int globalScore =
                 (speed + strength + stamina + vision + creativity + leadership) / 6;
@@ -175,11 +190,8 @@ public class EditStatsActivity extends AppCompatActivity {
                         Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show());
     }
 
-    private int parseInt(EditText et) {
-        try {
-            return Integer.parseInt(et.getText().toString());
-        } catch (Exception e) {
-            return 0;
-        }
+    // ================== CALLBACK ==================
+    private interface StatCallback {
+        void onChange(int value);
     }
 }

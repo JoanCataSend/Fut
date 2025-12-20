@@ -17,7 +17,6 @@
 
         <!-- TÍTULO -->
         <TextView
-            android:id="@+id/txtEditTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Editar Estadísticas"
@@ -26,7 +25,7 @@
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 
-        <!-- ================= DATOS GENERALES ================= -->
+        <!-- ================= DATOS DEL JUGADOR ================= -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,50 +35,74 @@
             android:textStyle="bold"
             android:layout_marginBottom="12dp"/>
 
+        <!-- NOMBRE -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del jugador"
+            android:textColor="#B0B0B0"
+            android:layout_marginBottom="4dp"/>
+
         <EditText
             android:id="@+id/inputName"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="Nombre"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#AAAAAA"
             android:background="@drawable/bg_inner_card"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="12dp"/>
+
+        <!-- GOLES -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Goles"
+            android:textColor="#B0B0B0"
+            android:layout_marginBottom="4dp"/>
 
         <EditText
             android:id="@+id/inputGoals"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="Goles"
             android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#AAAAAA"
             android:background="@drawable/bg_inner_card"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="12dp"/>
+
+        <!-- ASISTENCIAS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asistencias"
+            android:textColor="#B0B0B0"
+            android:layout_marginBottom="4dp"/>
 
         <EditText
             android:id="@+id/inputAssists"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="Asistencias"
             android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#AAAAAA"
             android:background="@drawable/bg_inner_card"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="12dp"/>
+
+        <!-- PARTIDOS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Partidos jugados"
+            android:textColor="#B0B0B0"
+            android:layout_marginBottom="4dp"/>
 
         <EditText
             android:id="@+id/inputMatches"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="Partidos jugados"
             android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#AAAAAA"
             android:background="@drawable/bg_inner_card"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:layout_marginBottom="24dp"/>
 
@@ -113,7 +136,7 @@
                 android:textColor="#FFFFFF"
                 android:background="@drawable/btn_circle"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtSpeedValue"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
@@ -162,7 +185,7 @@
                 android:textColor="#FFFFFF"
                 android:background="@drawable/btn_circle"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtStrengthValue"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
@@ -211,7 +234,7 @@
                 android:textColor="#FFFFFF"
                 android:background="@drawable/btn_circle"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtStaminaValue"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
@@ -260,7 +283,7 @@
                 android:textColor="#FFFFFF"
                 android:background="@drawable/btn_circle"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtVisionValue"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
@@ -309,7 +332,7 @@
                 android:textColor="#FFFFFF"
                 android:background="@drawable/btn_circle"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtCreativityValue"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
@@ -358,7 +381,7 @@
                 android:textColor="#FFFFFF"
                 android:background="@drawable/btn_circle"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtLeadershipValue"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
