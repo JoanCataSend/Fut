@@ -20,6 +20,8 @@ public class EditStatsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String playerId;
 
+    private Player player;
+
     // ===== DATOS GENERALES =====
     private EditText inputName, inputGoals, inputAssists, inputMatches;
 
@@ -35,6 +37,11 @@ public class EditStatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_stats);
 
         playerId = getIntent().getStringExtra("id");
+        if (playerId == null) {
+            finish();
+            return;
+        }
+
         db = FirebaseFirestore.getInstance();
 
         // ===== INPUTS GENERALES =====
@@ -43,7 +50,7 @@ public class EditStatsActivity extends AppCompatActivity {
         inputAssists = findViewById(R.id.inputAssists);
         inputMatches = findViewById(R.id.inputMatches);
 
-        // ===== STATS (EDITABLES) =====
+        // ===== STATS =====
         txtSpeed = findViewById(R.id.txtSpeedValue);
         txtStrength = findViewById(R.id.txtStrengthValue);
         txtStamina = findViewById(R.id.txtStaminaValue);
@@ -70,7 +77,7 @@ public class EditStatsActivity extends AppCompatActivity {
         findViewById(R.id.btnLeadershipPlus).setOnClickListener(v -> updateStat(txtLeadership, +1));
         findViewById(R.id.btnLeadershipMinus).setOnClickListener(v -> updateStat(txtLeadership, -1));
 
-        // ===== LISTENERS DE ESCRITURA =====
+        // ===== WATCHERS =====
         addWatcher(txtSpeed, v -> speed = v);
         addWatcher(txtStrength, v -> strength = v);
         addWatcher(txtStamina, v -> stamina = v);
@@ -89,24 +96,26 @@ public class EditStatsActivity extends AppCompatActivity {
         db.collection("players").document(playerId)
                 .get()
                 .addOnSuccessListener(d -> {
-                    Player p = d.toObject(Player.class);
-                    if (p == null) return;
+                    player = d.toObject(Player.class);
+                    if (player == null) return;
 
-                    inputName.setText(p.name);
-                    inputGoals.setText(String.valueOf(p.goals));
-                    inputAssists.setText(String.valueOf(p.assists));
-                    inputMatches.setText(String.valueOf(p.matches));
+                    player.id = d.getId();
 
-                    if (p.physical != null) {
-                        speed = p.physical.speed;
-                        strength = p.physical.strength;
-                        stamina = p.physical.stamina;
+                    inputName.setText(player.name);
+                    inputGoals.setText(String.valueOf(player.goals));
+                    inputAssists.setText(String.valueOf(player.assists));
+                    inputMatches.setText(String.valueOf(player.matches));
+
+                    if (player.physical != null) {
+                        speed = player.physical.speed;
+                        strength = player.physical.strength;
+                        stamina = player.physical.stamina;
                     }
 
-                    if (p.mental != null) {
-                        vision = p.mental.vision;
-                        creativity = p.mental.creativity;
-                        leadership = p.mental.leadership;
+                    if (player.mental != null) {
+                        vision = player.mental.vision;
+                        creativity = player.mental.creativity;
+                        leadership = player.mental.leadership;
                     }
 
                     txtSpeed.setText(String.valueOf(speed));
@@ -151,6 +160,8 @@ public class EditStatsActivity extends AppCompatActivity {
 
     private void saveStats() {
 
+        if (player == null) return;
+
         String name = inputName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(this, "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show();
@@ -160,9 +171,6 @@ public class EditStatsActivity extends AppCompatActivity {
         int goals = parse(inputGoals.getText().toString());
         int assists = parse(inputAssists.getText().toString());
         int matches = parse(inputMatches.getText().toString());
-
-        int globalScore =
-                (speed + strength + stamina + vision + creativity + leadership) / 6;
 
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
@@ -178,7 +186,7 @@ public class EditStatsActivity extends AppCompatActivity {
         updates.put("mental.creativity", creativity);
         updates.put("mental.leadership", leadership);
 
-        updates.put("globalScore", globalScore);
+        // ❌ NO tocar globalScore aquí (FIX CLAVE)
 
         db.collection("players").document(playerId)
                 .update(updates)

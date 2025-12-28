@@ -10,6 +10,10 @@ public class Player {
     public int number;
     public String photoUrl;
 
+    // 👉 NUEVO: posición del jugador
+    // "field" | "goalkeeper"
+    public String position;
+
     // ======================
     // ESTADÍSTICAS GENERALES (NUEVO MODELO)
     // ======================
@@ -25,10 +29,15 @@ public class Player {
     public Stats stats;
 
     // ======================
-    // ATRIBUTOS
+    // ATRIBUTOS (JUGADORES DE CAMPO)
     // ======================
     public Physical physical;
     public Mental mental;
+
+    // ======================
+    // ATRIBUTOS (PORTEROS)  🔥 NUEVO
+    // ======================
+    public Goalkeeper goalkeeper;
 
     // 🔴 Constructor vacío OBLIGATORIO para Firestore
     public Player() {}
@@ -46,7 +55,7 @@ public class Player {
         public Stats() {}
     }
 
-    // ---- Atributos físicos ----
+    // ---- Atributos físicos (jugadores de campo) ----
     public static class Physical {
         public int speed;
         public int strength;
@@ -55,12 +64,24 @@ public class Player {
         public Physical() {}
     }
 
-    // ---- Atributos mentales ----
+    // ---- Atributos mentales (jugadores de campo) ----
     public static class Mental {
         public int vision;
         public int creativity;
         public int leadership;
 
         public Mental() {}
+    }
+
+    // ---- Atributos de PORTERO ----
+    public static class Goalkeeper {
+        public int reflexes;      // Reflejos
+        public int positioning;   // Colocación
+        public int saves;         // Paradas
+        public int aerial;        // Juego aéreo
+        public int distribution;  // Saque / pase
+        public int oneOnOne;      // Mano a mano
+
+        public Goalkeeper() {}
     }
 }

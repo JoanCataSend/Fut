@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class PlayerDetailActivity extends AppCompatActivity {
     private Button btnEdit;
 
     private String playerId;
+    private Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +66,23 @@ public class PlayerDetailActivity extends AppCompatActivity {
         boolean isAdmin = prefs.getBoolean("isAdmin", false);
 
         if (!isAdmin) {
-            btnEdit.setVisibility(Button.GONE);
-        } else {
-            btnEdit.setOnClickListener(v -> {
-                Intent i = new Intent(this, EditStatsActivity.class);
-                i.putExtra("id", playerId);
-                startActivity(i);
-            });
+            btnEdit.setVisibility(View.GONE);
         }
+
+        // Listener UNA sola vez
+        btnEdit.setOnClickListener(v -> {
+            if (player == null) return;
+
+            if ("goalkeeper".equals(player.position)) {
+                Intent i = new Intent(this, EditGoalkeeperStatsActivity.class);
+                i.putExtra("id", player.id);
+                startActivity(i);
+            } else {
+                Intent i = new Intent(this, EditStatsActivity.class);
+                i.putExtra("id", player.id);
+                startActivity(i);
+            }
+        });
 
         loadPlayer();
     }
@@ -92,28 +103,51 @@ public class PlayerDetailActivity extends AppCompatActivity {
     }
 
     private void bindPlayer(DocumentSnapshot d) {
-        Player p = d.toObject(Player.class);
-        if (p == null) return;
+        player = d.toObject(Player.class);
+        if (player == null) return;
 
-        name.setText(p.name != null ? p.name : "");
+        player.id = d.getId();
 
-        txtPoints.setText(String.valueOf(p.globalScore));
-        txtGoals.setText(String.valueOf(p.goals));
-        txtAssists.setText(String.valueOf(p.assists));
-        txtMatches.setText(String.valueOf(p.matches));
+        // 🔒 Valor por defecto
+        if (player.position == null) {
+            player.position = "field";
+        }
 
-        if (p.photoUrl != null && !p.photoUrl.isEmpty()) {
-            Picasso.get().load(p.photoUrl).fit().centerCrop().into(img);
+        name.setText(player.name != null ? player.name : "");
+        txtPoints.setText(String.valueOf(player.globalScore));
+        txtGoals.setText(String.valueOf(player.goals));
+        txtAssists.setText(String.valueOf(player.assists));
+        txtMatches.setText(String.valueOf(player.matches));
+
+        // Opcional: ocultar stats ofensivas a porteros
+        if ("goalkeeper".equals(player.position)) {
+            txtGoals.setVisibility(View.GONE);
+            txtAssists.setVisibility(View.GONE);
+        } else {
+            txtGoals.setVisibility(View.VISIBLE);
+            txtAssists.setVisibility(View.VISIBLE);
+        }
+
+        if (player.photoUrl != null && !player.photoUrl.isEmpty()) {
+            Picasso.get().load(player.photoUrl).fit().centerCrop().into(img);
         } else {
             img.setImageResource(R.mipmap.ic_launcher);
         }
 
-        setupRadar(p);
+        setupRadar(player);
     }
 
     // ================= RADAR =================
 
     private void setupRadar(Player p) {
+        if ("goalkeeper".equals(p.position)) {
+            setupGoalkeeperRadar(p);
+        } else {
+            setupFieldRadar(p);
+        }
+    }
+
+    private void setupFieldRadar(Player p) {
         if (p.physical == null || p.mental == null) return;
 
         ArrayList<RadarEntry> entries = new ArrayList<>();
@@ -124,6 +158,34 @@ public class PlayerDetailActivity extends AppCompatActivity {
         entries.add(new RadarEntry(p.mental.creativity));
         entries.add(new RadarEntry(p.mental.leadership));
 
+        List<String> labels = Arrays.asList(
+                "Velocidad", "Fuerza", "Resistencia",
+                "Visión", "Creatividad", "Liderazgo"
+        );
+
+        drawRadar(entries, labels);
+    }
+
+    private void setupGoalkeeperRadar(Player p) {
+        if (p.goalkeeper == null) return;
+
+        ArrayList<RadarEntry> entries = new ArrayList<>();
+        entries.add(new RadarEntry(p.goalkeeper.reflexes));
+        entries.add(new RadarEntry(p.goalkeeper.positioning));
+        entries.add(new RadarEntry(p.goalkeeper.saves));
+        entries.add(new RadarEntry(p.goalkeeper.aerial));
+        entries.add(new RadarEntry(p.goalkeeper.distribution));
+        entries.add(new RadarEntry(p.goalkeeper.oneOnOne));
+
+        List<String> labels = Arrays.asList(
+                "Reflejos", "Colocación", "Paradas",
+                "Juego aéreo", "Distribución", "1 vs 1"
+        );
+
+        drawRadar(entries, labels);
+    }
+
+    private void drawRadar(List<RadarEntry> entries, List<String> labels) {
         RadarDataSet set = new RadarDataSet(entries, "");
         set.setColor(Color.WHITE);
         set.setFillColor(Color.parseColor("#FF3BAA"));
@@ -133,11 +195,6 @@ public class PlayerDetailActivity extends AppCompatActivity {
         set.setDrawValues(false);
 
         radarChart.setData(new RadarData(set));
-
-        List<String> labels = Arrays.asList(
-                "Velocidad", "Fuerza", "Resistencia",
-                "Visión", "Creatividad", "Liderazgo"
-        );
 
         XAxis xAxis = radarChart.getXAxis();
         xAxis.setTextColor(Color.WHITE);
